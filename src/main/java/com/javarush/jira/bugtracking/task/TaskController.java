@@ -18,11 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static com.javarush.jira.common.BaseHandler.createdResponse;
 
@@ -155,5 +157,23 @@ public class TaskController {
         public TaskTreeNode(TaskTo taskTo) {
             this(taskTo, new LinkedList<>());
         }
+    }
+
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<Set<String>> getTags(@PathVariable long id) {
+        Set<String> tags = taskService.findTagsByTaskId(id);
+        return ResponseEntity.ok(tags);
+    }
+
+    @PostMapping("/{id}/tags")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addTagToTask(@PathVariable long id, @RequestParam String tag) {
+        taskService.addTagToTask(id, tag);
+    }
+
+    @DeleteMapping("/{id}/tags")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeTagFromTask(@PathVariable long id, @RequestParam String tag) {
+        taskService.removeTagFromTask(id, tag);
     }
 }

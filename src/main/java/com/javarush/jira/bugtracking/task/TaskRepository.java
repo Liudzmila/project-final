@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional(readOnly = true)
 public interface TaskRepository extends BaseRepository<Task> {
@@ -37,4 +38,17 @@ public interface TaskRepository extends BaseRepository<Task> {
             WHERE id IN (SELECT child FROM task_with_subtasks)
             """, nativeQuery = true)
     void setTaskAndSubTasksSprint(long taskId, Long sprintId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO task_tag (task_id, tag) VALUES (:taskId, :tag)", nativeQuery = true)
+    void addTagToTask(long taskId, String tag);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM task_tag WHERE task_id = :taskId AND tag = :tag", nativeQuery = true)
+    void removeTagFromTask(long taskId, String tag);
+
+    @Query(value = "SELECT tag FROM task_tag WHERE task_id = :taskId", nativeQuery = true)
+    Set<String> findTagsByTaskId(long taskId);
 }

@@ -21,6 +21,7 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static com.javarush.jira.bugtracking.ObjectType.TASK;
 import static com.javarush.jira.bugtracking.task.TaskUtil.fillExtraFields;
@@ -39,6 +40,7 @@ public class TaskService {
     private final SprintRepository sprintRepository;
     private final TaskExtMapper extMapper;
     private final UserBelongRepository userBelongRepository;
+    private final TaskRepository taskRepository;
 
     @Transactional
     public void changeStatus(long taskId, String statusCode) {
@@ -139,5 +141,19 @@ public class TaskService {
         if (!userType.equals(possibleUserType)) {
             throw new DataConflictException(String.format(assign ? CANNOT_ASSIGN : CANNOT_UN_ASSIGN, userType, task.getStatusCode()));
         }
+    }
+
+    @Transactional
+    public void addTagToTask(long taskId, String tag) {
+        taskRepository.addTagToTask(taskId, tag);
+    }
+
+    @Transactional
+    public void removeTagFromTask(long taskId, String tag) {
+        taskRepository.removeTagFromTask(taskId, tag);
+    }
+
+    public Set<String> findTagsByTaskId(long taskId) {
+        return taskRepository.findTagsByTaskId(taskId);
     }
 }

@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
@@ -65,8 +66,10 @@ public class ActivityTo extends BaseTo implements HasAuthorId {
     @Nullable
     Integer estimate;
 
+    List<String> tags;
+
     public ActivityTo(Long id, Long taskId, Long authorId, LocalDateTime updated, String comment, String statusCode,
-                      String priorityCode, String typeCode, String title, String description, Integer estimate, UserTo author) {
+                      String priorityCode, String typeCode, String title, String description, Integer estimate, UserTo author, List<String> tags) {
         super(id);
         this.taskId = taskId;
         this.authorId = authorId;
@@ -79,5 +82,6 @@ public class ActivityTo extends BaseTo implements HasAuthorId {
         this.description = description;
         this.estimate = estimate;
         this.author = author;
+        this.tags = tags;
     }
 }

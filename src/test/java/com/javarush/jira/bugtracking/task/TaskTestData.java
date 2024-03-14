@@ -8,6 +8,7 @@ import com.javarush.jira.bugtracking.task.to.TaskToExt;
 import com.javarush.jira.bugtracking.task.to.TaskToFull;
 import com.javarush.jira.common.to.CodeTo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.javarush.jira.bugtracking.ObjectType.TASK;
@@ -44,14 +45,14 @@ public class TaskTestData {
 
     public static final TaskTo taskTo1 = new TaskTo(TASK1_ID, "epic-" + TASK1_ID, "Data", "epic", "in_progress", null, PROJECT1_ID, SPRINT1_ID);
     public static final TaskTo taskTo2 = new TaskTo(TASK2_ID, "epic-" + TASK2_ID, "Trees", "epic", "in_progress", null, PROJECT1_ID, SPRINT1_ID);
-    public static final TaskToFull taskToFull1 = new TaskToFull(TASK1_ID, "epic-1", "Data", null, "epic", "in_progress", "normal", null, 4, null, new CodeTo(PROJECT1_ID, "PR1"), new CodeTo(SPRINT1_ID, "SP-1.001"), null);
-    public static final TaskToFull taskToFull2 = new TaskToFull(TASK2_ID, "epic-2", "Trees UPD", "task UPD", "epic", "ready_for_review", "high", null, 4, null, new CodeTo(PROJECT1_ID, "PR1"), new CodeTo(SPRINT1_ID, "SP-1.001"), null);
-    public static final ActivityTo activityTo1ForTask1 = new ActivityTo(ACTIVITY1_ID, TASK1_ID, USER_ID, null, null, "in_progress", "low", "epic", "Data", null, 3, null);
-    public static final ActivityTo activityTo2ForTask1 = new ActivityTo(ACTIVITY1_ID + 1, TASK1_ID, ADMIN_ID, null, null, null, "normal", null, "Data", null, null, null);
-    public static final ActivityTo activityTo3ForTask1 = new ActivityTo(ACTIVITY1_ID + 2, TASK1_ID, USER_ID, null, null, null, null, null, "Data", null, 4, null);
+    public static final TaskToFull taskToFull1 = new TaskToFull(TASK1_ID, "epic-1", "Data", null, "epic", "in_progress", "normal", null, 4, null, new CodeTo(PROJECT1_ID, "PR1"), new CodeTo(SPRINT1_ID, "SP-1.001"), null, new ArrayList<>());
+    public static final TaskToFull taskToFull2 = new TaskToFull(TASK2_ID, "epic-2", "Trees UPD", "task UPD", "epic", "ready_for_review", "high", null, 4, null, new CodeTo(PROJECT1_ID, "PR1"), new CodeTo(SPRINT1_ID, "SP-1.001"), null, new ArrayList<>());
+    public static final ActivityTo activityTo1ForTask1 = new ActivityTo(ACTIVITY1_ID, TASK1_ID, USER_ID, null, null, "in_progress", "low", "epic", "Data", null, 3, null, null);
+    public static final ActivityTo activityTo2ForTask1 = new ActivityTo(ACTIVITY1_ID + 1, TASK1_ID, ADMIN_ID, null, null, null, "normal", null, "Data", null, null, null, null);
+    public static final ActivityTo activityTo3ForTask1 = new ActivityTo(ACTIVITY1_ID + 2, TASK1_ID, USER_ID, null, null, null, null, null, "Data", null, 4, null, null);
     public static final List<ActivityTo> activityTosForTask1 = List.of(activityTo3ForTask1, activityTo2ForTask1, activityTo1ForTask1);
-    public static final ActivityTo activityTo1ForTask2 = new ActivityTo(ACTIVITY1_ID + 3, TASK2_ID, USER_ID, null, null, "in_progress", "normal", "epic", "Trees", "Trees desc", 4, null);
-    public static final ActivityTo updatePriorityCode = new ActivityTo(ACTIVITY1_ID + 4, TASK2_ID, USER_ID, null, null, "ready_for_review", "high", "epic", "Trees UPD", "task UPD", 4, null);
+    public static final ActivityTo activityTo1ForTask2 = new ActivityTo(ACTIVITY1_ID + 3, TASK2_ID, USER_ID, null, null, "in_progress", "normal", "epic", "Trees", "Trees desc", 4, null, null);
+    public static final ActivityTo updatePriorityCode = new ActivityTo(ACTIVITY1_ID + 4, TASK2_ID, USER_ID, null, null, "ready_for_review", "high", "epic", "Trees UPD", "task UPD", 4, null, null);
     public static final List<ActivityTo> activityTosForTask2 = List.of(updatePriorityCode, activityTo1ForTask2);
 
     public static final UserBelong userTask1Assignment1 = new UserBelong(1L, TASK, USER_ID, "task_developer");
@@ -65,18 +66,18 @@ public class TaskTestData {
     }
 
     public static TaskToExt getNewTaskTo() {
-        return new TaskToExt(null, "epic-1", "Data New", "task NEW", "epic", "in_progress", "low", null, 3, null, PROJECT1_ID, SPRINT1_ID);
+        return new TaskToExt(null, "epic-1", "Data New", "task NEW", "epic", "in_progress", "low", null, 3, null, PROJECT1_ID, SPRINT1_ID, new ArrayList<>());
     }
 
     public static ActivityTo getNewActivityTo() {
-        return new ActivityTo(null, TASK1_ID, USER_ID, null, null, "ready_for_review", null, "epic", null, null, 4, null);
+        return new ActivityTo(null, TASK1_ID, USER_ID, null, null, "ready_for_review", null, "epic", null, null, 4, null, new ArrayList<>());
     }
 
     public static TaskToExt getUpdatedTaskTo() {
-        return new TaskToExt(TASK2_ID, "epic-2", "Trees UPD", "task UPD", "epic", "ready_for_review", "high", null, 4, null, PROJECT1_ID, SPRINT1_ID);
+        return new TaskToExt(TASK2_ID, "epic-2", "Trees UPD", "task UPD", "epic", "ready_for_review", "high", null, 4, null, PROJECT1_ID, SPRINT1_ID, new ArrayList<>());
     }
 
     public static ActivityTo getUpdatedActivityTo() {
-        return new ActivityTo(ACTIVITY1_ID, TASK1_ID, USER_ID, null, null, "in_progress", "low", "epic", null, null, 3, null);
+        return new ActivityTo(ACTIVITY1_ID, TASK1_ID, USER_ID, null, null, "in_progress", "low", "epic", null, null, 3, null, new ArrayList<>());
     }
 }
