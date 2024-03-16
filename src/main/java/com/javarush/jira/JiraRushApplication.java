@@ -28,6 +28,7 @@ public class JiraRushApplication {
         try {
             Duration inProgressTime = activityService.getTimeSpentInInProgress(task11);
             Duration testingTime = activityService.getTimeSpentInTesting(task11);
+            System.out.println("\u001B[34mHi, Yura! It's testing for task 8:\u001B[0m");
             System.out.println("Time spent in in_progress for task 11: " +
                     inProgressTime.toDaysPart() + " days, " +
                     inProgressTime.toHoursPart() + " hours, " +
