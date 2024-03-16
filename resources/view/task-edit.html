@@ -104,6 +104,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- Tags -->
+        <div class="form-group">
+            <div class="col">
+                <span class="h5 fw-bold text-secondary ms-1">Tags</span>
+            </div>
+            <input type="text" class="form-control" id="tags" name="tags" placeholder="Enter tag">
+            <small class="form-text text-muted">Add tag here.</small>
+            <button type="button" class="btn btn-primary mt-2" onclick="addTagFromInput()">Add Tag</button>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(task.tags)}">
+            <h5>Current Tags:</h5>
+            <div id="displayedTags">
+                <div th:each="tag, tagIndex : ${task.tags}">
+                    <span th:text="${tag}"></span>
+                    <button type="button" class="remove-tag" onclick="removeTag(this)">&times;</button>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="createdTags" name="createdTags">
+        <input type="hidden" id="tagsToRemove" name="tagsToRemove">
+
     </appEdit>
 </th:block>
 <script>
@@ -115,3 +138,4 @@
 <script src="/static/js/common.js"></script>
 <script src="/static/js/attachments.js"></script>
 <script src="/static/js/activity.js"></script>
+<script src="/static/js/tags.js"></script>

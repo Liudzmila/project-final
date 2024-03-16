@@ -41,6 +41,7 @@ public class TaskUIController {
         addTaskInfo(model, taskTo);
         model.addAttribute("fragment", fragment);
         model.addAttribute("belongs", taskHandler.getAllBelongs(id));
+        model.addAttribute("tags", service.findTagsByTaskId(id));
         return "task";
     }
 
@@ -50,6 +51,7 @@ public class TaskUIController {
         TaskToFull taskTo = service.get(id);
         addTaskInfo(model, taskTo);
         addRefs(model, taskTo.getStatusCode());
+        model.addAttribute("tags", service.findTagsByTaskId(id));
         return "task-edit";
     }
 
@@ -78,7 +80,9 @@ public class TaskUIController {
     }
 
     @PostMapping
-    public String createOrUpdate(@Valid @ModelAttribute("task") TaskToExt taskTo, BindingResult result, Model model) {
+    public String createOrUpdate(@Valid @ModelAttribute("task") TaskToExt taskTo, BindingResult result, Model model
+            , @RequestParam(value = "createdTags", required = false) List<String> createdTags
+            , @RequestParam(value = "tagsToRemove", required = false) List<String> tagsToRemove) {
         if (result.hasErrors()) {
             addRefs(model, taskTo.getStatusCode());
             List<ActivityTo> activityTos = taskTo.isNew() ? Collections.emptyList() :
@@ -87,6 +91,9 @@ public class TaskUIController {
             activityTos.removeAll(comments);
             model.addAttribute("comments", comments);
             model.addAttribute("activities", activityTos);
+            model.addAttribute("tags", createdTags);
+            model.addAttribute("createdTags", createdTags);
+            model.addAttribute("tagsToRemove", tagsToRemove);
             if (!taskTo.isNew()) {
                 model.addAttribute("attachs", attachmentHandler.getRepository().getAllForObject(taskTo.id(), ObjectType.TASK));
             }
@@ -101,6 +108,23 @@ public class TaskUIController {
             log.info("update {} with id={}", taskTo, taskTo.id());
             service.update(taskTo, taskTo.id());
         }
+
+        Set<String> existingTags = service.findTagsByTaskId(taskId);
+        if (createdTags != null) {
+            for (String tag : createdTags) {
+                if (!tag.isEmpty() && !existingTags.contains(tag)) { // Проверка на уникальность тегов
+                    service.addTagToTask(taskId, tag);
+                }
+            }
+        }
+
+        if (tagsToRemove != null) {
+            for (String tag : tagsToRemove) {
+                if (!tag.isEmpty() && existingTags.contains(tag)) { // Проверка на уникальность тегов
+                    service.removeTagFromTask(taskId, tag);
+                }
+            }
+        }
         return "redirect:/ui/tasks/" + taskId;
     }
 
@@ -111,6 +135,7 @@ public class TaskUIController {
         model.addAttribute("comments", comments);
         model.addAttribute("attachs", attachmentHandler.getRepository().getAllForObject(taskTo.id(), ObjectType.TASK));
         model.addAttribute("activities", taskTo.getActivityTos());
+        model.addAttribute("tags", taskTo.getTags());
     }
 
     private void addRefs(Model model, String currentStatus) {
