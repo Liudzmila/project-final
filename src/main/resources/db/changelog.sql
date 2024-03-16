@@ -329,3 +329,13 @@ values ('todo', 'ToDo', 3, 'in_progress,canceled|'),
 
 drop index UK_USER_BELONG;
 create unique index UK_USER_BELONG on USER_BELONG (OBJECT_ID, OBJECT_TYPE, USER_ID, USER_TYPE_CODE) where ENDPOINT is null;
+
+--changeset sobalevaluda4:change_ACTIVITY
+INSERT INTO ACTIVITY (ID, AUTHOR_ID, TASK_ID, UPDATED, STATUS_CODE)
+VALUES (7, 1, 11, '2024-03-13T09:00:00', 'in_progress');
+
+INSERT INTO ACTIVITY (ID, AUTHOR_ID, TASK_ID, UPDATED, STATUS_CODE)
+VALUES (8, 1, 11, '2024-03-14T12:00:00', 'ready_for_review');
+
+INSERT INTO ACTIVITY (ID, AUTHOR_ID, TASK_ID, UPDATED, STATUS_CODE)
+VALUES (9, 1, 11, '2024-03-15T15:00:00', 'done');
