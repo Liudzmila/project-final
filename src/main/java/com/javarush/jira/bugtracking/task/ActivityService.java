@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.javarush.jira.bugtracking.task.TaskUtil.getLatestValue;
@@ -72,5 +74,55 @@ public class ActivityService {
                 task.setTypeCode(latestType);
             }
         }
+    }
+
+    public Duration getTimeSpentInInProgress(Task task) {
+        List<Activity> activities = handler.getRepository().findAllByTaskIdOrderByUpdatedDesc(task.id());
+        LocalDateTime inProgressTime = null;
+        LocalDateTime readyForReviewTime = null;
+
+        for (Activity activity : activities) {
+            if ("in_progress".equals(activity.getStatusCode())) {
+                inProgressTime = activity.getUpdated();
+                break;
+            }
+        }
+        for (Activity activity : activities) {
+            if ("ready_for_review".equals(activity.getStatusCode())) {
+                readyForReviewTime = activity.getUpdated();
+                break;
+            }
+        }
+
+        if (inProgressTime == null || readyForReviewTime == null) {
+            throw new IllegalStateException("Task " + task.getId() + " hasn't spent time in both 'in_progress' and 'ready_for_review' states.");
+        }
+
+        return Duration.between(inProgressTime, readyForReviewTime);
+    }
+
+    public Duration getTimeSpentInTesting(Task task) {
+        List<Activity> activities = handler.getRepository().findAllByTaskIdOrderByUpdatedDesc(task.id());
+        LocalDateTime readyForReviewTime = null;
+        LocalDateTime doneTime = null;
+
+        for (Activity activity : activities) {
+            if ("ready_for_review".equals(activity.getStatusCode())) {
+                readyForReviewTime = activity.getUpdated();
+                break;
+            }
+        }
+        for (Activity activity : activities) {
+            if ("done".equals(activity.getStatusCode())) {
+                doneTime = activity.getUpdated();
+                break;
+            }
+        }
+
+        if (readyForReviewTime == null || doneTime == null) {
+            throw new IllegalStateException("Task " + task.getId() + " hasn't spent time in both 'ready_for_review' and 'done' states.");
+        }
+
+        return Duration.between(readyForReviewTime, doneTime);
     }
 }
