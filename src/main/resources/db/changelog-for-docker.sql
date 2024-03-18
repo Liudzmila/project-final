@@ -657,12 +657,15 @@ values (6, 1, '2023-05-15 09:05:10', null, 'Data', null, 3, 'epic', 'in_progress
        (11, 118, '2023-05-16 10:05:10', null, 'UI tab of tasks', null, 4, 'task', 'in_progress', 'normal'),
        (5, 118, '2023-05-16 11:10:10', null, 'UI tab of tasks', null, null, null, null, 'high'),
        (11, 118, '2023-05-16 12:30:10', null, 'UI tab of tasks', null, 2, null, null, null);
---changeset sobalevaluda4:change_ACTIVITY
-INSERT INTO ACTIVITY (ID, AUTHOR_ID, TASK_ID, UPDATED, STATUS_CODE)
-VALUES (7, 1, 11, '2024-03-13T09:00:00', 'in_progress');
 
-INSERT INTO ACTIVITY (ID, AUTHOR_ID, TASK_ID, UPDATED, STATUS_CODE)
-VALUES (8, 1, 11, '2024-03-14T12:00:00', 'ready_for_review');
+insert into ACTIVITY(AUTHOR_ID, TASK_ID, UPDATED, COMMENT, TITLE, DESCRIPTION, ESTIMATE, TYPE_CODE, STATUS_CODE,
+                     PRIORITY_CODE)
+VALUES (1, 11, '2024-03-13T09:00:00', null, 'Data', null, 3, null, 'in_progress', 'normal');
 
-INSERT INTO ACTIVITY (ID, AUTHOR_ID, TASK_ID, UPDATED, STATUS_CODE)
-VALUES (9, 1, 11, '2024-03-15T16:00:00', 'done');
+insert into ACTIVITY(AUTHOR_ID, TASK_ID, UPDATED, COMMENT, TITLE, DESCRIPTION, ESTIMATE, TYPE_CODE, STATUS_CODE,
+                     PRIORITY_CODE)
+VALUES (1, 11, '2024-03-15T12:00:00', null, 'Data', null, 3, null, 'ready_for_review', 'normal');
+
+insert into ACTIVITY(AUTHOR_ID, TASK_ID, UPDATED, COMMENT, TITLE, DESCRIPTION, ESTIMATE, TYPE_CODE, STATUS_CODE,
+                     PRIORITY_CODE)
+VALUES (1, 11, '2024-03-18T16:30:10', null, 'Data', null, 3, null, 'done', 'normal');
