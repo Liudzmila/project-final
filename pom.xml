@@ -191,17 +191,20 @@
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <phase>validate</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputDirectory>${project.build.directory}/resources</outputDirectory>
                             <resources>
+                                <resource>
+                                    <directory>${project.basedir}/resources</directory>
+                                </resource>
                                 <resource>
                                     <directory>${project.basedir}</directory>
                                     <includes>
-                                        <include>Dockerfile</include>
+                                        <include>variables.env</include>
                                     </includes>
                                 </resource>
                             </resources>
